@@ -44,7 +44,7 @@ curl -kI https://mutabor-sec.ru
 - `nginx` должен иметь доступ на чтение к `/home/hosty/StubSite443_VPN`
 - в вашей сборке `nginx` должны использоваться `sites-available` и `sites-enabled`
 - сертификаты должны существовать по путям ниже
-- у пользователя, который запускает `deploy.sh`, должен быть `sudo` для `cp`, `ln`, `nginx -t` и `systemctl reload nginx`
+- у пользователя, который запускает `deploy.sh`, должен быть `sudo` для `apt-get`, `cp`, `ln`, `nginx -t` и `systemctl`
 
 Используемые пути:
 

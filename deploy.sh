@@ -22,6 +22,20 @@ require_file() {
   [[ -f "$path" ]] || fail "Файл не найден: $path"
 }
 
+install_nginx_if_missing() {
+  if command -v nginx >/dev/null 2>&1; then
+    return
+  fi
+
+  if ! command -v apt-get >/dev/null 2>&1; then
+    fail "nginx не установлен, а apt-get не найден. Установи nginx вручную."
+  fi
+
+  log "nginx не найден, устанавливаю через apt"
+  sudo apt-get update
+  sudo apt-get install -y nginx
+}
+
 if [[ ! -d "$APP_DIR" ]]; then
   fail "Каталог приложения не найден: $APP_DIR"
 fi
@@ -33,8 +47,9 @@ require_file "$SOURCE_NGINX_CONF"
 require_file "$CERT_DIR/fullchain.pem"
 require_file "$CERT_DIR/privkey.pem"
 
-command -v nginx >/dev/null 2>&1 || fail "nginx не установлен"
 command -v systemctl >/dev/null 2>&1 || fail "systemctl не найден"
+
+install_nginx_if_missing
 
 log "Проверяю права на чтение статических файлов"
 chmod 755 "$APP_DIR"
@@ -48,8 +63,9 @@ sudo ln -sfn "$NGINX_AVAILABLE" "$NGINX_ENABLED"
 log "Проверяю конфигурацию nginx"
 sudo nginx -t
 
-log "Перезагружаю nginx"
-sudo systemctl reload nginx
+log "Включаю и перезапускаю nginx"
+sudo systemctl enable nginx
+sudo systemctl restart nginx
 
 log "Проверяю ответ по HTTPS на localhost"
 curl -kI --max-time 10 https://127.0.0.1 >/dev/null
