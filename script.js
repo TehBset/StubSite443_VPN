@@ -79,14 +79,13 @@ const startFakeConversion = () => {
     }
   }, 280);
 
-  // Заглушка намеренно всегда завершается ошибкой.
   failTimer = window.setTimeout(() => {
     clearTimers();
     progressFill.style.width = "100%";
     setStatus({
       title: "Ошибка конвертации",
       message:
-        "Не удалось сформировать PDF. Демонстрационная заглушка всегда завершает процесс с ошибкой.",
+        "Не удалось сформировать PDF. Проверьте целостность документа и повторите попытку позже.",
       error: true,
       showProgress: false,
     });

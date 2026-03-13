@@ -45,6 +45,7 @@ curl -kI https://mutabor-sec.ru
 - в вашей сборке `nginx` должны использоваться `sites-available` и `sites-enabled`
 - сертификаты должны существовать по путям ниже
 - у пользователя, который запускает `deploy.sh`, должен быть `sudo` для `apt-get`, `cp`, `ln`, `nginx -t` и `systemctl`
+- `deploy.sh` сам настраивает доступ `www-data` к каталогу сайта через `setfacl`, а если `setfacl` нет, использует `chmod` для прохода по `/home` и `/home/hosty`
 
 Используемые пути:
 

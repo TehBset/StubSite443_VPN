@@ -36,6 +36,26 @@ install_nginx_if_missing() {
   sudo apt-get install -y nginx
 }
 
+grant_nginx_access() {
+  log "Настраиваю доступ nginx к каталогу сайта"
+
+  if command -v setfacl >/dev/null 2>&1; then
+    sudo setfacl -m u:www-data:x /home
+    sudo setfacl -m u:www-data:x /home/hosty
+    sudo setfacl -m u:www-data:rx "$APP_DIR"
+    sudo setfacl -m u:www-data:rx "$APP_DIR/nginx"
+    sudo setfacl -m u:www-data:r "$APP_DIR/index.html"
+    sudo setfacl -m u:www-data:r "$APP_DIR/styles.css"
+    sudo setfacl -m u:www-data:r "$APP_DIR/script.js"
+    sudo setfacl -m u:www-data:r "$SOURCE_NGINX_CONF"
+    return
+  fi
+
+  log "setfacl не найден, использую chmod для прохода по каталогам"
+  sudo chmod o+x /home
+  sudo chmod o+x /home/hosty
+}
+
 if [[ ! -d "$APP_DIR" ]]; then
   fail "Каталог приложения не найден: $APP_DIR"
 fi
@@ -55,6 +75,7 @@ log "Проверяю права на чтение статических фай
 chmod 755 "$APP_DIR"
 chmod 755 "$APP_DIR/nginx"
 chmod 644 "$APP_DIR/index.html" "$APP_DIR/styles.css" "$APP_DIR/script.js" "$SOURCE_NGINX_CONF"
+grant_nginx_access
 
 log "Устанавливаю конфиг nginx"
 sudo cp "$SOURCE_NGINX_CONF" "$NGINX_AVAILABLE"
