@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Word в PDF</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="shell">
+      <section class="hero">
+        <p class="eyebrow">Stub converter</p>
+        <h1>Конвертер Word в PDF</h1>
+        <p class="lead">
+          Загрузите документ, запустите конвертацию и получите предсказуемую
+          ошибку для демонстрации пустого сценария.
+        </p>
+      </section>
+
+      <section class="panel">
+        <div class="panel__header">
+          <div>
+            <p class="panel__label">Новый файл</p>
+            <h2>Выберите `.doc` или `.docx`</h2>
+          </div>
+          <span class="badge">PDF output</span>
+        </div>
+
+        <label class="dropzone" for="fileInput" id="dropzone">
+          <input
+            id="fileInput"
+            type="file"
+            accept=".doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+          />
+          <span class="dropzone__icon">W</span>
+          <span class="dropzone__title">Перетащите Word-файл сюда</span>
+          <span class="dropzone__hint">или нажмите, чтобы выбрать документ</span>
+        </label>
+
+        <div class="file-card hidden" id="fileCard">
+          <div>
+            <p class="file-card__label">Выбранный документ</p>
+            <p class="file-card__name" id="fileName">-</p>
+          </div>
+          <button class="ghost-button" type="button" id="resetButton">
+            Сбросить
+          </button>
+        </div>
+
+        <button class="primary-button" id="convertButton" type="button" disabled>
+          Конвертировать в PDF
+        </button>
+
+        <div class="status hidden" id="statusBox" aria-live="polite">
+          <div class="status__row">
+            <span class="status__dot"></span>
+            <span class="status__title" id="statusTitle">Подготовка</span>
+          </div>
+          <p class="status__message" id="statusMessage"></p>
+          <div class="progress hidden" id="progressBar">
+            <span id="progressFill"></span>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <script src="script.js"></script>
+  </body>
+</html>
